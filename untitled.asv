@@ -126,19 +126,6 @@ end
 
 % --- Executes on button press in rb2.
 function rb2_Callback(hObject, eventdata, handles)
-set(handles.rb1, 'Value', 0);
-radio1 = get(handles.rb1, 'Value');
-radio2 = get(handles.rb2, 'Value');
-if radio1 == 1
-  set(handles.listbox1, 'Visible', 'on');
-else
-  set(handles.listbox1, 'Visible', 'off');
-end
-if radio2 == 1
-  set(handles.listbox2, 'Visible', 'on');
-else
-  set(handles.listbox2, 'Visible', 'off');
-end
 % hObject    handle to rb2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDsssATA)
@@ -148,19 +135,6 @@ end
 
 % --- Executes on button press in rb1.
 function rb1_Callback(hObject, eventdata, handles)
-set(handles.rb2, 'Value', 0);
-radio1 = get(handles.rb1, 'Value');
-radio2 = get(handles.rb2, 'Value');
-if radio1 == 1
-  set(handles.listbox1, 'Visible', 'on');
-else
-  set(handles.listbox1, 'Visible', 'off');
-end
-if radio2 == 1
-  set(handles.listbox2, 'Visible', 'on');
-else
-  set(handles.listbox2, 'Visible', 'off');
-end
 % hObject    handle to rb1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
