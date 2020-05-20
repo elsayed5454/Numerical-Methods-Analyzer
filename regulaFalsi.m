@@ -13,6 +13,8 @@ yHighVec = zeros(0,0);
 yLowerVec = zeros(0, 0);
 yMidVec = zeros(0, 0);
 
+f = sym(formula);
+f_dash = diff(f);
 
 
 %check if the interval is valid
@@ -24,13 +26,22 @@ end
 %store the latest two approx roots
 rootVals = [0;0];
 
+plotX =[ lower : 0.1 :upper];
+plotEqn = vectorize(f);
+plotEqnDash = vectorize(f_dash);
+plotY = subs(plotEqn, plotX);
+plotYDash = subs(plotEqnDash, plotX)
+plot(plotX, plotYDash, plotX, plotY,'.-'), legend('F Dash', 'F');
+set(gca, 'XTick', lower :1:upper,...
+    'XTickLabel', lower :1:upper));
+
 for i = 1 : maxIter
 
 	funcUpper = func(upper);
 	funcLower = func(lower);
 	
 	yLowerVec = [yLowerVec funcLower];
-	yHighVec = [yHighVec funcUpper];
+	yHighVec(i, 1) = funcUpper;
 	xLowerVec = [xLowerVec lower];
 	xHighVec = [xHighVec upper];
 	
@@ -38,8 +49,8 @@ for i = 1 : maxIter
 	mid = ((lower * funcUpper) - (upper * funcLower)) / (funcUpper - funcLower);
 	funcMid = func(mid);
 	
-	xMidVec = [xMidVec mid];
-	yMidVec = [yMidVec funcMid];
+	xMidVec(i, 1) = mid;
+	yMidVec(i, 1) = funcMid;
 	
 	if i == 1
 		rootVals(i) = mid;
@@ -64,4 +75,6 @@ for i = 1 : maxIter
 	end
 end
 root = mid;
+
+	
 end 

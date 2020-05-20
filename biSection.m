@@ -4,6 +4,10 @@ function [root, xLowerVec, xHighVec, xMidVec,errorVec] = biSection(lower, upper,
 func = inline(formula);
 
 
+f = sym(formula);
+f_dash = diff(f);
+
+
 %initialize vectors to store all the iterations 
 xLowerVec = zeros(0,0);
 xHighVec = zeros(0,0);
@@ -15,6 +19,16 @@ if (func(lower) * func(upper)) >= 0
 	disp('wrong Interval');
 	return;
 end 
+
+plotX =[ lower : 0.1 :upper];
+plotEqn = vectorize(f);
+plotEqnDash = vectorize(f_dash);
+plotY = subs(plotEqn, plotX);
+plotYDash = subs(plotEqnDash, plotX)
+plot(plotX, plotYDash, plotX, plotY,'.-'), legend('F Dash', 'F');
+set(gca, 'XTick', lower :1:upper,...
+    'XTickLabel', lower :1:upper));
+
 
 rootVals = [0;0];
 
