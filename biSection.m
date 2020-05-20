@@ -54,7 +54,7 @@ for i = 1 : maxIter
 	xLowerVec = [xLowerVec lower];
 	xHighVec = [xHighVec upper];
 	
-	mid = (upper + lower) / 2;
+	mid = ((upper - lower) / 2) + lower;
 	xMidVec = [xMidVec mid];
 	
 	funcMid = func(mid);
