@@ -35,7 +35,7 @@ for i=1:imax
     xf_vec = [xf_vec xf];
 
     % Calculating error
-    ea = abs((xf - xi) / xf);
+    ea = abs((xf - xi) / xf) * 100;
     
     error_vec = [error_vec ea];
     last_index = last_index + 1;
