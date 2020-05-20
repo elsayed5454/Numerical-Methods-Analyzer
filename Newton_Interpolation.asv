@@ -1,0 +1,33 @@
+
+function NI = Newton_Interpolation(x,y,p)
+n = length(x);
+a(1) = y(1);
+for k = 1 : n - 1
+   d(k, 1) = (y(k+1) - y(k))/(x(k+1) - x(k));
+end
+for j = 2 : n - 1
+   for k = 1 : n - j
+      d(k, j) = (d(k+1, j - 1) - d(k, j - 1))/(x(k+j) - x(k));
+   end
+end
+b(1)=y(1);
+for k = 2 : n
+    b(k) = d(1,k-1);
+end
+fprintf('coeffecients b0 to bn : ');
+b
+Func= num2str(b(1));
+result = b(1);
+for j=2 : n
+    temp = b(j);
+    Func = strcat(Func, ' + ');
+    Func = strcat(Func, num2str(b(j)));
+    for k=1 : j-1
+        temp = temp .* (p - x(k));
+        Func=strcat(Func,strcat('*',strcat('(x - ',strcat(num2str(x(k)),')'))));
+    end
+    result = result + temp;
+end
+ezplot(Func);
+NI = result;
+

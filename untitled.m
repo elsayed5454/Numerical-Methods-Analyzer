@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 20-May-2020 04:31:08
+% Last Modified by GUIDE v2.5 20-May-2020 17:29:27
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -127,7 +127,13 @@ end
 % --- Executes on button press in rb2.
 function rb2_Callback(hObject, eventdata, handles)
 
-
+set(handles.edit2,'String','');
+set(handles.edit3,'String','');
+set(handles.edit5,'String','');
+set(handles.edit4,'String','');
+set(handles.edit6,'String','');
+set(handles.edit8,'String','');
+set(handles.text3,'String','');
 
 set(handles.edit4, 'Visible', 'off');
 set(handles.edit6, 'Visible', 'off');
@@ -135,6 +141,8 @@ set(handles.edit7, 'Visible', 'off');
 set(handles.text9, 'Visible', 'off');
 set(handles.text12, 'Visible', 'off');
 set(handles.text13, 'Visible', 'off');
+set(handles.edit8, 'Visible', 'off');
+set(handles.text3, 'Visible', 'on');
 set(handles.rb1, 'Value', 0);
 radio1 = get(handles.rb1, 'Value');
 radio2 = get(handles.rb2, 'Value');
@@ -167,6 +175,15 @@ set(handles.edit7, 'Visible', 'off');
 
 % --- Executes on button press in rb1.
 function rb1_Callback(hObject, eventdata, handles)
+set(handles.edit2,'String','');
+set(handles.edit3,'String','');
+set(handles.edit5,'String','');
+set(handles.edit4,'String','');
+set(handles.edit6,'String','');
+set(handles.edit8,'String','');
+set(handles.text3,'String','');
+set(handles.edit8, 'Visible', 'on');
+set(handles.text3, 'Visible', 'off');
 set(handles.listbox1, 'Value', 1);
 set(handles.edit4, 'Visible', 'on');
     set(handles.edit6, 'Visible', 'on');
@@ -233,6 +250,13 @@ if get(handles.rb2, 'Value') == 1
 end
 ListBoxValue = get(handles.listbox1,'Value');
 if ListBoxValue == 1 || ListBoxValue == 2
+    set(handles.edit2,'String','');
+set(handles.edit3,'String','');
+set(handles.edit5,'String','');
+set(handles.edit4,'String','');
+set(handles.edit6,'String','');
+set(handles.edit8,'String','');
+set(handles.text3,'String','');
     set(handles.edit4, 'Visible', 'on');
     set(handles.edit6, 'Visible', 'on');
     myString = sprintf('Upper : ');
@@ -242,6 +266,13 @@ if ListBoxValue == 1 || ListBoxValue == 2
     set(handles.text12, 'Visible', 'on');
     set(handles.text9, 'Visible', 'on');
 else
+    set(handles.edit2,'String','');
+set(handles.edit3,'String','');
+set(handles.edit5,'String','');
+set(handles.edit4,'String','');
+set(handles.edit6,'String','');
+set(handles.edit8,'String','');
+set(handles.text3,'String','');
     set(handles.edit4, 'Visible', 'on');
     myString = sprintf('initial Guess : ');
     set(handles.text9, 'String', myString);
@@ -290,6 +321,19 @@ set(handles.edit7, 'Visible', 'off');
 set(handles.text9, 'Visible', 'off');
 set(handles.text12, 'Visible', 'off');
 set(handles.text13, 'Visible', 'off');
+if get(handles.rb1, 'Value') == 1
+    return;
+end
+ListBoxValue = get(handles.listbox2,'Value');
+if ListBoxValue == 1 || ListBoxValue == 2
+    set(handles.edit2,'String','');
+set(handles.edit3,'String','');
+set(handles.edit5,'String','');
+set(handles.edit4,'String','');
+set(handles.edit6,'String','');
+set(handles.edit8,'String','');
+set(handles.text3,'String','');
+end
 % hObject    handle to listbox2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -323,22 +367,21 @@ radio2 = get(handles.rb2, 'Value');
 if radio1 == 1
   
   ListBoxValue = get(handles.listbox1,'Value');
-  
-  if ListBoxValue == 1 || ListBoxValue == 2
-      formula =get(handles.edit2, 'String');
-      m=get(handles.edit3, 'String');
-      if size(m) == 0
-          maxitr =100;
-      else
-      maxitr =str2double(get(handles.edit3, 'String'));
-      end
+  formula =get(handles.edit2, 'String');
+  m=get(handles.edit3, 'String');
+  if size(m) == 0
+	maxitr =100;
+  else
+	maxitr =str2double(get(handles.edit3, 'String'));
+  end
       
-      m=get(handles.edit5, 'String');
-      if size(m) == 0
-          error =.0001;
-      else
-         error =str2double(get(handles.edit5, 'String'));
-      end
+  m=get(handles.edit5, 'String');
+  if size(m) == 0
+	error =.0001;
+  else
+	error =str2double(get(handles.edit5, 'String'));
+  end
+  if ListBoxValue == 1 || ListBoxValue == 2
       
       upper =str2double(get(handles.edit4, 'String'));
       lower =str2double(get(handles.edit6, 'String'));
@@ -366,6 +409,28 @@ if radio1 == 1
      % rootString=sprintf('low : %d , high = %d , mid = %d, error = %d', xLowerVec, xHighVec, xMidVec,errorVec);
      % currString{end+1}=  rootString;
      % set(handles.edit8,'String',currString);
+  else
+	
+	inGuess = str2double(get(handles.edit4, 'String'));
+	if ListBoxValue == 3
+		gFunc = get(handles.edit6, 'String');
+		[root, xVec, nextVec, errorVec] = fixedPoint(formula, gFunc, inGuess, error, maxitr);
+    end
+    if ListBoxValue == 4
+		[root, xVec, nextVec, errorVec] = newton_raphson(formula, inGuess, maxitr,error);
+    end
+	format short;
+    currString = get(handles.edit8,'String')
+    rootString=sprintf('root : %d', root);
+	currString{end+1}=  rootString;
+    set(handles.edit8,'String',currString);
+    for it = 1 : size(xVec,2)
+      currString= get(handles.edit8,'String')
+      rootString=sprintf('iteration : %d \n   initialGuess : %d \n    next Guess = %d \n	error = %d',it, xVec(1, it), nextVec(1, it), errorVec(1, it));
+      currString{end+1}=  rootString;
+      set(handles.edit8,'String',currString);
+    end
+	
   end
   
 end
@@ -385,7 +450,7 @@ if radio2 == 1
          syms x
         x = values(i);
         w = double(subs(sum));
-        bika = sprintf('%sf(%d) = %d\n', bika,i, w);
+        bika = sprintf('%sf(%d) = %d\n', bika,x, w);
      end
      set(handles.text3, 'String',bika);
      %myString = sprintf('Hello world!\nThe value is %d', ListBoxValue);
@@ -394,7 +459,21 @@ if radio2 == 1
   end
   
   if ListBoxValue == 2
-      
+      x_value = str2double(strsplit(get(handles.edit2, 'String'),{' ',','}))
+      y_value = str2double(strsplit(get(handles.edit3, 'String'),{' ',','}))
+      values = str2double(strsplit(get(handles.edit5, 'String'),{' ',','}))
+      sum =Newton_Interpolation(x_value , y_value);
+      bika = [strcat('f(x) = ' , char(sum))];
+     %set(handles.text3, 'String',strcat('Function = ' , char(sum)));
+     bika = sprintf('%s\n', bika);
+     
+     for i=1:length(values);
+         syms x
+        x = values(i);
+        w = double(subs(sum));
+        bika = sprintf('%sf(%d) = %d\n', bika,x, w);
+     end
+     set(handles.text3, 'String',bika);
   end
 end
 
@@ -596,3 +675,10 @@ function edit8_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes during object creation, after setting all properties.
+function rb1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to rb1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
