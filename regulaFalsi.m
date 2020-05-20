@@ -30,7 +30,7 @@ for i = 1 : maxIter
 	funcLower = func(lower);
 	
 	yLowerVec = [yLowerVec funcLower];
-	yHighVec(i, 1) = funcUpper;
+	yHighVec = [yHighVec funcUpper];
 	xLowerVec = [xLowerVec lower];
 	xHighVec = [xHighVec upper];
 	
@@ -38,8 +38,8 @@ for i = 1 : maxIter
 	mid = ((lower * funcUpper) - (upper * funcLower)) / (funcUpper - funcLower);
 	funcMid = func(mid);
 	
-	xMidVec(i, 1) = mid;
-	yMidVec(i, 1) = funcMid;
+	xMidVec = [xMidVec mid];
+	yMidVec = [yMidVec funcMid];
 	
 	if i == 1
 		rootVals(i) = mid;
