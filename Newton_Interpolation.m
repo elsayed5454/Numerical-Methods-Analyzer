@@ -29,3 +29,9 @@ end
 
 NI = Func;
 
+plotX = min(min(x)) : 0.1 : max(max(x));
+plotEqn = vectorize(NI);
+plotY = subs(plotEqn, plotX);
+plot(plotX, plotYDash,'.-'), legend('F');
+
+
