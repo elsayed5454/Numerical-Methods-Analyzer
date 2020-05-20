@@ -17,23 +17,44 @@ f = sym(formula);
 f_dash = diff(f);
 
 
+
+%store the latest two approx roots
+rootVals = [0;0];
+
+syms x
+plotX = lower : 0.1 :upper;
+plotY = zeros(0,0);
+plotYDash = zeros(0,0);
+
+
+for i = 1 : size(plotX, 2)
+    x=plotX(i);
+    w=subs(f);
+    wdash = subs(f_dash);
+    plotY = [plotY w]; 
+    plotYDash = [plotYDash wdash];
+end
+
+plot(plotX, plotYDash, plotX, plotY,'.-'), legend('F Dash', 'F');
+set(gca, 'XTick', lower :1:upper,...
+    'XTickLabel', lower :1:upper);
+
+if func(lower) == 0
+    root = lower;
+    return;
+end
+
+if func(upper) == 0
+    root = upper;
+    return;
+end
+
 %check if the interval is valid
 if (func(lower) * func(upper)) >= 0
 	disp('wrong Interval');
 	return;
 end 
 
-%store the latest two approx roots
-rootVals = [0;0];
-
-plotX =[ lower : 0.1 :upper];
-plotEqn = vectorize(f);
-plotEqnDash = vectorize(f_dash);
-plotY = subs(plotEqn, plotX);
-plotYDash = subs(plotEqnDash, plotX)
-plot(plotX, plotYDash, plotX, plotY,'.-'), legend('F Dash', 'F');
-set(gca, 'XTick', lower :1:upper,...
-    'XTickLabel', lower :1:upper));
 
 for i = 1 : maxIter
 
@@ -41,7 +62,7 @@ for i = 1 : maxIter
 	funcLower = func(lower);
 	
 	yLowerVec = [yLowerVec funcLower];
-	yHighVec(i, 1) = funcUpper;
+	yHighVec = [yHighVec funcUpper];
 	xLowerVec = [xLowerVec lower];
 	xHighVec = [xHighVec upper];
 	
@@ -49,8 +70,8 @@ for i = 1 : maxIter
 	mid = ((lower * funcUpper) - (upper * funcLower)) / (funcUpper - funcLower);
 	funcMid = func(mid);
 	
-	xMidVec(i, 1) = mid;
-	yMidVec(i, 1) = funcMid;
+	xMidVec = [xMidVec mid];
+	yMidVec = [yMidVec funcMid];
 	
 	if i == 1
 		rootVals(i) = mid;

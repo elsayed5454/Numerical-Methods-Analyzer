@@ -27,11 +27,19 @@ for j=2 : n
     expand(Func);
 end
 
-NI = Func;
+NI = Func
 
 plotX = min(min(x)) : 0.1 : max(max(x));
-plotEqn = vectorize(NI);
-plotY = subs(plotEqn, plotX);
-plot(plotX, plotYDash,'.-'), legend('F');
+plotY = zeros(0,0);
+
+for i = 1 : size(plotX, 2)
+    X=plotX(i);
+    w=subs(Func);
+    plotY = [plotY w]; 
+end
+plot(plotX, plotY,'.-'), legend('F');
+
+end
+
 
 

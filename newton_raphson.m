@@ -17,22 +17,27 @@ end
 f = sym(func);
 f_dash = diff(f);
 
-xi_vec = zeros(imax, 1);
-xf_vec = zeros(imax, 1);
-error_vec = zeros(imax, 1);
+xi_vec = zeros(0, 0);
+xf_vec = zeros(0, 0);
+error_vec = zeros(0, 0);
 last_index = 0;
 
 for i=1:imax
     % xf is final X resulted from the current iteration
+    
+    if subs(f_dash, xi) == 0
+        xf = 0
+        return 
+    end
     xf = xi - subs(f, xi) / subs(f_dash, xi);
 
-    xi_vec(i, 1) = xi;
-    xf_vec(i, 1) = xf;
+    xi_vec = [xi_vec xi];
+    xf_vec = [xf_vec xf];
 
     % Calculating error
     ea = abs((xf - xi) / xf);
     
-    error_vec(i, 1) = ea;
+    error_vec = [error_vec ea];
     last_index = last_index + 1;
         
     % Check error tolerance
@@ -44,19 +49,27 @@ for i=1:imax
 end
 
 root = double(xf);
-xi_vec = double(xi_vec(1:last_index, :));
-xf_vec = double(xf_vec(1:last_index, :));
-error_vec = double(error_vec(1:last_index, :));
+xi_vec = double(xi_vec(:, :));
+xf_vec = double(xf_vec(:, :));
+error_vec = double(error_vec(:, :));
 format long
 
-plotX = [root - (15) : 0.1 :root + (15)];
-plotEqn = vectorize(f);
-plotEqnDash = vectorize(f_dash);
-plotY = subs(plotEqn, plotX);
-plotYDash = subs(plotEqnDash, plotX)
+
+syms x
+plotX = root - 15 : 0.1 : root + 15;
+plotY = zeros(0,0);
+plotYDash = zeros(0,0);
+for i = 1 : size(plotX, 2)
+    x=plotX(i);
+    w=subs(f);
+    wdash = subs(f_dash);
+    plotY = [plotY w]; 
+    plotYDash = [plotYDash wdash];
+end
+
 plot(plotX, plotYDash, plotX, plotY,'.-'), legend('F Dash', 'F');
-set(gca, 'XTick', root - (15) :1:root + (15),...
-    'XTickLabel', root - (15) :1:root + (15));
+set(gca, 'XTick', root - 15 :1:root + 5,...
+    'XTickLabel', root - 15 :1: root + 5);
 
 
 end

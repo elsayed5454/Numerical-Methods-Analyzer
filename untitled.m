@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 20-May-2020 17:29:27
+% Last Modified by GUIDE v2.5 20-May-2020 23:00:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -68,7 +68,7 @@ end
 
 % Choose default command line output for untitled
 %vec = ['Bisection      ';'False_position';'Fixed_point';'Newten_Rhaphson';'Secant'];
-vec = ['Bisection      ';'False_position ';'Fixed_point    ';'Newten_Rhaphson';'Secant         '];
+vec = ['Bisection        ';'False_position   ';'Fixed_point      ';'Newten_Rhaphson  ';'Secant           ';'General algorithm'];
 vec1 = ['Lagrange';'Newten  '];
 handles.output = hObject;
 
@@ -184,6 +184,7 @@ set(handles.edit8,'String','');
 set(handles.text3,'String','');
 set(handles.edit8, 'Visible', 'on');
 set(handles.text3, 'Visible', 'off');
+set(handles.edit7, 'Visible', 'off');
 set(handles.listbox1, 'Value', 1);
 set(handles.edit4, 'Visible', 'on');
     set(handles.edit6, 'Visible', 'on');
@@ -238,6 +239,7 @@ function listbox1_Callback(hObject, eventdata, handles)
 %text9_edit4
 %text12_edit6
 %text13_edit7
+cla(handles.ax2,'reset');
 set(handles.edit4, 'Visible', 'off');
 set(handles.edit6, 'Visible', 'off');
 set(handles.edit7, 'Visible', 'off');
@@ -321,6 +323,7 @@ set(handles.edit7, 'Visible', 'off');
 set(handles.text9, 'Visible', 'off');
 set(handles.text12, 'Visible', 'off');
 set(handles.text13, 'Visible', 'off');
+cla(handles.ax2,'reset');
 if get(handles.rb1, 'Value') == 1
     return;
 end
@@ -394,7 +397,7 @@ if radio1 == 1
         [root, xLowerVec, xHighVec, xMidVec, yLowerVec, yHighVec, yMidVec ,errorVec] = regulaFalsi(formula, lower, upper, error, maxitr);
           
       end
-      format short;
+      format long;
       currString= get(handles.edit8,'String')
       rootString=sprintf('root : %d', root);
       currString{end+1}=  rootString;
@@ -404,7 +407,17 @@ if radio1 == 1
         rootString=sprintf('iteration : %d \n   low : %d \n    high = %d \n    mid = %d\n   error = %d',it, xLowerVec(1, it), xHighVec(1, it), xMidVec(1, it),errorVec(1, it));
         currString{end+1}=  rootString;
         set(handles.edit8,'String',currString);
+      end
+  end
+  if ListBoxValue == 6
+      inGuess = str2double(get(handles.edit4, 'String'));
+      aa=birge_Vieta(inGuess, formula, maxitr, error)
+     bika = sprintf('Roots =\n');
+     
+     for i=1:length(aa);
+        bika = sprintf('%s%d\n', bika,aa(i));
      end
+     set(handles.edit8, 'String',bika);
      % currString= get(handles.edit8,'String')
      % rootString=sprintf('low : %d , high = %d , mid = %d, error = %d', xLowerVec, xHighVec, xMidVec,errorVec);
      % currString{end+1}=  rootString;
@@ -435,14 +448,14 @@ if radio1 == 1
   
 end
 if radio2 == 1
-  ListBoxValue = get(handles.listbox1,'Value');
+  ListBoxValue = get(handles.listbox2,'Value');
   if ListBoxValue == 1
       x_value = str2double(strsplit(get(handles.edit2, 'String'),{' ',','}))
       y_value = str2double(strsplit(get(handles.edit3, 'String'),{' ',','}))
       values = str2double(strsplit(get(handles.edit5, 'String'),{' ',','}))
      sum =lagrange_interpolation(values,x_value , y_value);
      
-     bika = [strcat('f(x) = ' , char(sum))];
+     bika = [strcat('Lagrange : f(x) = ' , char(sum))];
      %set(handles.text3, 'String',strcat('Function = ' , char(sum)));
      bika = sprintf('%s\n', bika);
      
@@ -459,19 +472,19 @@ if radio2 == 1
   end
   
   if ListBoxValue == 2
-      x_value = str2double(strsplit(get(handles.edit2, 'String'),{' ',','}))
-      y_value = str2double(strsplit(get(handles.edit3, 'String'),{' ',','}))
-      values = str2double(strsplit(get(handles.edit5, 'String'),{' ',','}))
+      x_value = str2double(strsplit(get(handles.edit2, 'String'),{' ',','}));
+      y_value = str2double(strsplit(get(handles.edit3, 'String'),{' ',','}));
+      values = str2double(strsplit(get(handles.edit5, 'String'),{' ',','}));
       sum =Newton_Interpolation(x_value , y_value);
-      bika = [strcat('f(x) = ' , char(sum))];
+      bika = strcat('Newton : f(x) = ' , char(sum));
      %set(handles.text3, 'String',strcat('Function = ' , char(sum)));
      bika = sprintf('%s\n', bika);
      
-     for i=1:length(values);
-         syms x
-        x = values(i);
-        w = double(subs(sum));
-        bika = sprintf('%sf(%d) = %d\n', bika,x, w);
+     for i=1:length(values)
+        syms X
+        X = values(i);
+        w = subs(sum)
+        bika = sprintf('%sf(%d) = %d\n', bika,X, double(w));
      end
      set(handles.text3, 'String',bika);
   end
@@ -682,3 +695,11 @@ function rb1_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to rb1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over pushbutton3.
+function pushbutton3_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to pushbutton3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

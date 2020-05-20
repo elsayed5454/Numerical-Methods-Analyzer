@@ -13,8 +13,8 @@ errorVec = zeros(0,0);
 plotEqn = vectorize(gEqn);
 plotY = plotEqn(plotX);
 plot(plotX, plotY, plotX, plotX,'.-'), legend('G(x) = x', 'y = x');
-set(gca, 'XTick', initialGuess - (10) :1:initialGuess + (10),...
-    'XTickLabel', initialGuess - (10) :1:initialGuess + (10));
+set(gca, 'XTick', initialGuess - (8) :1:initialGuess + (8),...
+    'XTickLabel', initialGuess - (8) :1:initialGuess + (8));
 
 
 for i = 1 : iter_max

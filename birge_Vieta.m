@@ -7,16 +7,15 @@ roots = zeros(0,0);
 syms x
 f = sym(equation);
 
-a = coeffs(f);
+a = sym2poly(f);
 
-a = fliplr(a);
+%a = fliplr(a);
 for i = 1 : (size(a, 2) - 1)
 	b = zeros(1, size(a, 2));
 	roots(1, i) = initRoot;
 	for iter = 1 : MaxIter
 		b = zeros(1, size(a, 2));
 		c = zeros(1, size(a, 2) - 1);
-		nextA = b(:, 1 : size(a, 2) - 1);
 		b(1, 1) = a(1, 1);
 		c(1, 1) = b(1, 1);
 		

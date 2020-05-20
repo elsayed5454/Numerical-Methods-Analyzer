@@ -15,20 +15,38 @@ xMidVec = zeros(0,0);
 errorVec = zeros(0, 0);
 
 
+
+syms x
+plotX = lower : 0.1 :upper;
+plotY = zeros(0,0);
+plotYDash = zeros(0,0);
+for i = 1 : size(plotX, 2)
+    x=plotX(i);
+    w=subs(f);
+    wdash = subs(f_dash);
+    plotY = [plotY w]; 
+    plotYDash = [plotYDash wdash];
+end
+
+plot(plotX, plotYDash, plotX, plotY,'.-'), legend('F Dash', 'F');
+set(gca, 'XTick', lower :1:upper,...
+    'XTickLabel', lower :1:upper);
+
+
+if func(lower) == 0
+    root = lower;
+    return;
+end
+
+if func(upper) == 0
+    root = upper;
+    return;
+end
+
 if (func(lower) * func(upper)) >= 0
 	disp('wrong Interval');
 	return;
 end 
-
-plotX =[ lower : 0.1 :upper];
-plotEqn = vectorize(f);
-plotEqnDash = vectorize(f_dash);
-plotY = subs(plotEqn, plotX);
-plotYDash = subs(plotEqnDash, plotX)
-plot(plotX, plotYDash, plotX, plotY,'.-'), legend('F Dash', 'F');
-set(gca, 'XTick', lower :1:upper,...
-    'XTickLabel', lower :1:upper));
-
 
 rootVals = [0;0];
 
