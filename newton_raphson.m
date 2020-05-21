@@ -13,9 +13,15 @@ if nargin == 2
 elseif nargin == 3
     error_tol = 0.00001;
 end
-
-f = sym(func);
-f_dash = diff(f);
+try
+    f = sym(func);
+    f_dash = diff(f);
+catch
+	errorID = 'Bad Expression';
+	msg = 'unable to parse the expression';
+	baseException = MException(errorID, msg);
+	throw(baseException);
+end
 
 xi_vec = zeros(0, 0);
 xf_vec = zeros(0, 0);
@@ -29,7 +35,14 @@ for i=1:imax
         xf = 0
         return 
     end
-    xf = xi - subs(f, xi) / subs(f_dash, xi);
+    try
+        xf = xi - subs(f, xi) / subs(f_dash, xi);
+    catch
+        errorID = 'Bad Expression';
+        msg = 'unable to parse the expression';
+        baseException = MException(errorID, msg);
+        throw(baseException);
+    end
 
     xi_vec = [xi_vec xi];
     xf_vec = [xf_vec xf];
@@ -54,17 +67,23 @@ xf_vec = double(xf_vec(:, :));
 error_vec = double(error_vec(:, :));
 format long
 
-
-syms x
-plotX = root - 15 : 0.1 : root + 15;
-plotY = zeros(0,0);
-plotYDash = zeros(0,0);
-for i = 1 : size(plotX, 2)
-    x=plotX(i);
-    w=subs(f);
-    wdash = subs(f_dash);
-    plotY = [plotY w]; 
-    plotYDash = [plotYDash wdash];
+try
+    syms x
+    plotX = root - 15 : 0.1 : root + 15;
+    plotY = zeros(0,0);
+    plotYDash = zeros(0,0);
+    for i = 1 : size(plotX, 2)
+        x=plotX(i);
+        w=subs(f);
+        wdash = subs(f_dash);
+        plotY = [plotY w]; 
+        plotYDash = [plotYDash wdash];
+    end
+catch
+	errorID = 'Bad Expression';
+	msg = 'unable to parse the expression';
+	baseException = MException(errorID, msg);
+	throw(baseException);
 end
 
 plot(plotX, plotYDash, plotX, plotY,'.-'), legend('F Dash', 'F');
