@@ -24,10 +24,12 @@ for i = 1 : iter_max
 	root = nextGuess;
 	if (nextGuess ~= 0)
 		error = abs((nextGuess - initialGuess) / abs(nextGuess)) * 100;
-		errorVec = [errorVec error];
-		if (error <= errorBound)
-			break;
-		end
+	else
+		error = Inf;
+	end	
+	errorVec = [errorVec error];
+	if (error <= errorBound)
+		break;
 	end
 	initialGuess = nextGuess; 
 end
