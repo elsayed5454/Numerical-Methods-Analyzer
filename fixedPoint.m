@@ -1,6 +1,13 @@
 function[root, xVec, nextVec, errorVec] = fixedPoint(fEqn, gEquation, initialGuess, errorBound, iter_max)
 
-gEqn = inline(gEquation);
+try
+	gEqn = inline(gEquation);
+catch
+	errorID = 'Bad Expression';
+	msg = 'unable to parse the expression';
+	baseException = MException(errorID, msg);
+	throw(baseException);
+end
 
 plotX = [initialGuess - (10) : 0.1 :initialGuess + (10)];
 
@@ -10,11 +17,18 @@ xVec = zeros(0,0);
 nextVec = zeros(0,0);
 errorVec = zeros(0,0);
 
-plotEqn = vectorize(gEqn);
-plotY = plotEqn(plotX);
-plot(plotX, plotY, plotX, plotX,'.-'), legend('G(x) = x', 'y = x');
-set(gca, 'XTick', initialGuess - (8) :1:initialGuess + (8),...
-    'XTickLabel', initialGuess - (8) :1:initialGuess + (8));
+try
+	plotEqn = vectorize(gEqn);
+	plotY = plotEqn(plotX);
+	plot(plotX, plotY, plotX, plotX,'.-'), legend('G(x) = x', 'y = x');
+	set(gca, 'XTick', initialGuess - (8) :1:initialGuess + (8),...
+		'XTickLabel', initialGuess - (8) :1:initialGuess + (8));
+catch
+	errorID = 'Bad Expression';
+	msg = 'unable to parse the expression';
+	baseException = MException(errorID, msg);
+	throw(baseException);
+end
 
 
 for i = 1 : iter_max
