@@ -483,17 +483,7 @@ try
     end
     
     if length(x_value)~=length(unique(x_value))
-        errorID = 'Bad:Expression';
-        msg = 'Enter right inputs,x values must be unique';
-        baseException = MException(errorID, msg);
-        throw(baseException);
-    end
-    if length(x_value)~=length(unique(y_value))
-        errorID = 'Bad:Expression';
-        msg = 'Enter right inputs,x values & y values must be the same size';
-        baseException = MException(errorID, msg);
-        throw(baseException);
-    end
+    
       if ListBoxValue == 1
 
 

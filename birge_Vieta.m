@@ -10,8 +10,8 @@ try
 	f = sym(equation);
 
 	a = sym2poly(f);
-catch
-	errorID = 'Bad Expression';
+catch ME
+	errorID = 'Bad:Expression';
 	msg = 'unable to parse the expression';
 	baseException = MException(errorID, msg);
 	throw(baseException);

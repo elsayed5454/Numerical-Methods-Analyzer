@@ -37,8 +37,8 @@ try
 	    plotY = [plotY w]; 
 	    plotYDash = [plotYDash wdash];
 	end
-catch
-	errorID = 'Bad Expression';
+catch ME
+	errorID = 'Bad:Expression';
 	msg = 'unable to parse the expression';
 	baseException = MException(errorID, msg);
 	throw(baseException);
