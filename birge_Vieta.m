@@ -4,10 +4,18 @@ function [roots] = birge_Vieta(initRoot, equation, MaxIter, errorBound)
 %initiate roots Vector
 roots = zeros(0,0);
 
-syms x
-f = sym(equation);
 
-a = sym2poly(f);
+try
+	syms x
+	f = sym(equation);
+
+	a = sym2poly(f);
+catch
+	errorID = 'Bad Expression';
+	msg = 'unable to parse the expression';
+	baseException = MException(errorID, msg);
+	throw(baseException);
+end
 
 %a = fliplr(a);
 for i = 1 : (size(a, 2) - 1)
@@ -28,7 +36,8 @@ for i = 1 : (size(a, 2) - 1)
 		end
 		
 		nextGuess = roots(1, i) - (b(1, size(a, 2))/ c(1, size(a, 2) - 1));
-		if abs(nextGuess - roots(1, i)) / abs(nextGuess) <= errorBound
+		
+		if abs(nextGuess - roots(1, i)) / abs(nextGuess) <= (errorBound / 100)
 			roots(1, i) = nextGuess;
 			break;
 		end
