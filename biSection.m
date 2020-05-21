@@ -81,7 +81,7 @@ for i = 1 : maxIter
 	else
 		rootVals(1) = rootVals(2);
 		rootVals(2) = mid;
-		if rootVals(2) == 0
+		if rootVals(2) ~= 0
 			error = abs(rootVals(2) - rootVals(1)) / abs(rootVals(2)) * 100;
 		else 
 			error = Inf;
