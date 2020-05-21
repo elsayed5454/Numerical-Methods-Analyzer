@@ -1,11 +1,17 @@
 function [root, xLowerVec, xHighVec, xMidVec,errorVec] = biSection(lower, upper, formula, maxError, maxIter)
 
 %Use the biSection method to get the root of the function 'func' in the interval [lower, upper]
-func = inline(formula);
+try
+	func = inline(formula);
 
-
-f = sym(formula);
-f_dash = diff(f);
+	f = sym(formula);
+	f_dash = diff(f);
+catch
+	errorID = 'Bad Expression';
+	msg = 'unable to parse the expression';
+	baseException = MException(errorID, msg);
+	throw(baseException);
+end
 
 
 %initialize vectors to store all the iterations 
@@ -15,18 +21,25 @@ xMidVec = zeros(0,0);
 errorVec = zeros(0, 0);
 
 
-
-syms x
-plotX = lower : 0.1 :upper;
-plotY = zeros(0,0);
-plotYDash = zeros(0,0);
-for i = 1 : size(plotX, 2)
-    x=plotX(i);
-    w=subs(f);
-    wdash = subs(f_dash);
-    plotY = [plotY w]; 
-    plotYDash = [plotYDash wdash];
+try
+	syms x
+	plotX = lower : 0.1 :upper;
+	plotY = zeros(0,0);
+	plotYDash = zeros(0,0);
+	for i = 1 : size(plotX, 2)
+		x=plotX(i);
+		w=subs(f);
+		wdash = subs(f_dash);
+		plotY = [plotY w]; 
+		plotYDash = [plotYDash wdash];
+	end
+catch
+	errorID = 'Bad Expression';
+	msg = 'unable to parse the expression';
+	baseException = MException(errorID, msg);
+	throw(baseException);
 end
+
 
 plot(plotX, plotYDash, plotX, plotY,'.-'), legend('F Dash', 'F');
 set(gca, 'XTick', lower :1:upper,...
@@ -44,7 +57,10 @@ if func(upper) == 0
 end
 
 if (func(lower) * func(upper)) >= 0
-	disp('wrong Interval');
+	errorID = 'Bad Interval';
+	msg = 'Wrong Interval';
+	baseException = MException(errorID, msg);
+	throw(baseException);
 	return;
 end 
 
@@ -65,7 +81,11 @@ for i = 1 : maxIter
 	else
 		rootVals(1) = rootVals(2);
 		rootVals(2) = mid;
-		error = abs(rootVals(2) - rootVals(1)) / abs(rootVals(2)) * 100;
+		if rootVals(2) == 0
+			error = abs(rootVals(2) - rootVals(1)) / abs(rootVals(2)) * 100;
+		else 
+			error = Inf;
+		end
 		errorVec = [errorVec error];
 		if error <= maxError
 			break;
