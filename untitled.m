@@ -424,7 +424,8 @@ try
          % rootString=sprintf('low : %d , high = %d , mid = %d, error = %d', xLowerVec, xHighVec, xMidVec,errorVec);
          % currString{end+1}=  rootString;
          % set(handles.edit8,'String',currString);
-      else
+      end
+      if ListBoxValue == 3 || ListBoxValue == 4 || ListBoxValue == 5
 
         inGuess = str2double(get(handles.edit4, 'String'));
         if ListBoxValue == 3
@@ -451,13 +452,13 @@ try
     end
     if radio2 == 1
       ListBoxValue = get(handles.listbox2,'Value');
-       x_value = str2double(strsplit(get(handles.edit2, 'String'),{' ',','}))
-       y_value = str2double(strsplit(get(handles.edit3, 'String'),{' ',','}))
-       values = str2double(strsplit(get(handles.edit5, 'String'),{' ',','}))
+       x_value = str2double(strsplit(get(handles.edit2, 'String'),{' ',','}));
+       y_value = str2double(strsplit(get(handles.edit3, 'String'),{' ',','}));
+       values = str2double(strsplit(get(handles.edit5, 'String'),{' ',','}));
 
 
-    tf = sum(sum(isnan(x_value)))
-    tf
+    tf = sum(sum(isnan(x_value)));
+ 
     if tf > 0
         errorID = 'Bad:Expression';
         msg = 'Enter right inputs';
@@ -488,18 +489,17 @@ try
         baseException = MException(errorID, msg);
         throw(baseException);
     end
-    if length(x_value)~=length(unique(y_value))
+    if length(x_value)~=length(y_value)
         errorID = 'Bad:Expression';
         msg = 'Enter right inputs,x values & y values must be the same size';
         baseException = MException(errorID, msg);
         throw(baseException);
     end
       if ListBoxValue == 1
-
-
+          
         summ =lagrange_interpolation(values,x_value , y_value);
 
-         bika = [strcat('Lagrange : f(x) = ' , char(summ))];
+         bika = strcat('Lagrange : f(x) = ' , char(summ));
          %set(handles.text3, 'String',strcat('Function = ' , char(sum)));
          bika = sprintf('%s\n', bika);
 
@@ -525,13 +525,14 @@ try
          for i=1:length(values)
             syms X
             X = values(i);
-            w = subs(summ)
+            w = subs(summ);
             bika = sprintf('%sf(%d) = %d\n', bika,X, double(w));
          end
          set(handles.text3, 'String',bika);
       end
     end
 catch ME
+    rethrow(ME)
 msgText = ME.message;
 radio1 = get(handles.rb1, 'Value');
 radio2 = get(handles.rb2, 'Value');

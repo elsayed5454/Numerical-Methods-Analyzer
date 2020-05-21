@@ -1,31 +1,5 @@
 function summ =lagrange_interpolation(values,x_values , y_values)
-flag =0;
-n = length(x_values);
-if n ~= length (y_values)
-    flag =1;
-    error ('X and Y must have the same length.');
-end
-tf =sum(sum(isnan(x_values)));
-if tf > 0
-    errorID = 'Bad:Expression';
-	msg = 'unable to parse ,Enter right input';
-	baseException = MException(errorID, msg);
-	throw(baseException);
-end
-tf=sum(sum( isnan(y_values)));
-if tf > 0
-    errorID = 'Bad:Expression';
-	msg = 'unable to parse ,Enter right input';
-	baseException = MException(errorID, msg);
-	throw(baseException);
-end
-tf =sum(sum( isnan(values)));
-if tf == 1
-         errorID = 'Bad:Expression';
-	msg = 'unable to parse ,Enter right input';
-	baseException = MException(errorID, msg);
-	throw(baseException);
-end
+
 summ=0;
 for i=1:n
     p=1;
@@ -43,6 +17,7 @@ end
 disp(summ);
 
 for i=1:length(values);
+syms x
 x=values(i);
 w=subs(summ);
 disp(w);
@@ -52,8 +27,10 @@ plotX = min(min(x_values)) : 0.1 : max(max(x_values));
 plotY = zeros(0,0);
 
 for i = 1 : size(plotX, 2)
-    x=plotX(i);
-    w=subs(summ);
+    syms x
+    x = plotX(i);
+    w = subs(summ);
     plotY = [plotY w]; 
 end
+disp('Im here')
 plot(plotX, plotY,'.-'), legend('F');
