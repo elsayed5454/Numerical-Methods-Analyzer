@@ -67,9 +67,9 @@ end
 % varargin   command line arguments to untitled (see VARARGIN)
 
 % Choose default command line output for untitled
-%vec = ['Bisection      ';'False_position';'Fixed_point';'Newten_Rhaphson';'Secant'];
-vec = ['Bisection        ';'False_position   ';'Fixed_point      ';'Newten_Rhaphson  ';'Secant           ';'General algorithm'];
-vec1 = ['Lagrange';'Newten  '];
+%vec = ['Bisection      ';'False_position';'Fixed_point';'Newton_Rhaphson';'Secant'];
+vec = ['Bisection        ';'False_position   ';'Fixed_point      ';'Newton_Rhaphson  ';'Secant           ';'General algorithm'];
+vec1 = ['Lagrange';'Newton  '];
 handles.output = hObject;
 
 set(handles.listbox1,'string',{vec});
