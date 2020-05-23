@@ -392,7 +392,7 @@ try
       else
         error =str2double(get(handles.edit5, 'String'));
       end
-      if ListBoxValue == 1 || ListBoxValue == 2
+      if ListBoxValue == 1 || ListBoxValue == 2 || ListBoxValue == 5
 
           upper =str2double(get(handles.edit4, 'String'));
           lower =str2double(get(handles.edit6, 'String'));
@@ -404,6 +404,10 @@ try
           if ListBoxValue == 2 
             [root, xLowerVec, xHighVec, xMidVec, yLowerVec, yHighVec, yMidVec ,errorVec] = regulaFalsi(formula, lower, upper, error, maxitr);
 
+          end
+          
+          if ListBoxValue == 5
+            [root, xLowerVec, xMidVec, xHighVec,errorVec] = secant(formula, lower, upper, maxitr, error)
           end
           format long;
           currString= get(handles.edit8,'String')
@@ -432,7 +436,7 @@ try
          % currString{end+1}=  rootString;
          % set(handles.edit8,'String',currString);
       end
-      if ListBoxValue == 3 || ListBoxValue == 4 || ListBoxValue == 5
+      if ListBoxValue == 3 || ListBoxValue == 4
 
         inGuess = str2double(get(handles.edit4, 'String'));
         if ListBoxValue == 3

@@ -56,17 +56,15 @@ x0 = double(x0);
 x1 = double(x1);
 x2 = double(x2);
 err_vec = double(err_vec);
-format long
 
 try
     syms x
-    plotX = root - 15 : 0.1 : root + 15;
+    plotX = xr - 15 : 0.1 : xr + 15;
     plotY = zeros(0,0);
     for i = 1 : size(plotX, 2)
         x=plotX(i);
         w=subs(f);
         plotY = [plotY w]; 
-       
     end
 catch ME
 	errorID = 'Bad:Expression';
@@ -75,8 +73,8 @@ catch ME
 	throw(baseException);
 end
 
-plot(plotX, plotY,'.-'), legend('F');
-set(gca, 'XTick', root - 15 :1:root + 5,...
-    'XTickLabel', root - 15 :1: root + 5);
+plot(plotX, plotY), legend('F');
+set(gca, 'XTick', xr - 15 :1:xr + 5,...
+    'XTickLabel', xr - 15 :1: xr + 5);
 
 end
