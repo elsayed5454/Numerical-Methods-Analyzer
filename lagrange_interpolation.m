@@ -1,9 +1,9 @@
 function summ =lagrange_interpolation(values,x_values , y_values)
 
 summ=0;
-for i=1:n
+for i=1:length(x_values)
     p=1;
-    for j=1:n
+    for j=1:length(x_values)
         if j~=i
             syms x
             c = (x-x_values(j))/(x_values(i)-x_values(j));

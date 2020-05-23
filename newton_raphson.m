@@ -26,7 +26,6 @@ end
 xi_vec = zeros(0, 0);
 xf_vec = zeros(0, 0);
 error_vec = zeros(0, 0);
-last_index = 0;
 
 for i=1:imax
     % xf is final X resulted from the current iteration
@@ -51,7 +50,6 @@ for i=1:imax
     ea = abs((xf - xi) / xf) * 100;
     
     error_vec = [error_vec ea];
-    last_index = last_index + 1;
         
     % Check error tolerance
     if (ea < error_tol) 
@@ -62,9 +60,9 @@ for i=1:imax
 end
 
 root = double(xf);
-xi_vec = double(xi_vec(:, :));
-xf_vec = double(xf_vec(:, :));
-error_vec = double(error_vec(:, :));
+xi_vec = double(xi_vec);
+xf_vec = double(xf_vec);
+error_vec = double(error_vec);
 format long
 
 try
