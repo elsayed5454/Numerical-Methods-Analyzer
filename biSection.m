@@ -15,23 +15,23 @@ end
 
 
 %initialize vectors to store all the iterations 
-xLowerVec = zeros(0,0);
-xHighVec = zeros(0,0);
-xMidVec = zeros(0,0);
-errorVec = zeros(0, 0);
-
+xLowerVec = zeros(1,maxIter);
+xHighVec = zeros(1,maxIter);
+xMidVec = zeros(1,maxIter);
+errorVec = zeros(1, maxIter);
+lastInd = 0;
 
 try
 	syms x
 	plotX = lower : 0.1 :upper;
-	plotY = zeros(0,0);
-	plotYDash = zeros(0,0);
+	plotY = zeros(1,size(plotX, 2));
+	plotYDash = zeros(1,size(plotX, 2));
 	for i = 1 : size(plotX, 2)
 		x=plotX(i);
 		w=subs(f);
 		wdash = subs(f_dash);
-		plotY = [plotY w]; 
-		plotYDash = [plotYDash wdash];
+		plotY(1, i) = w; 
+		plotYDash(1, i) = wdash;
 	end
 catch
 	errorID = 'Bad Expression';
@@ -67,17 +67,17 @@ end
 rootVals = [0;0];
 
 for i = 1 : maxIter
-	xLowerVec = [xLowerVec lower];
-	xHighVec = [xHighVec upper];
+	xLowerVec(1, i) =  lower;
+	xHighVec(1, i) = upper;
 	
 	mid = ((upper - lower) / 2) + lower;
-	xMidVec = [xMidVec mid];
+	xMidVec(1, i) = mid;
 	
 	funcMid = func(mid);
 	
 	if i == 1
 		rootVals(i) = mid;
-		errorVec = [errorVec 0];
+		errorVec(1, i) = Inf;
 	else
 		rootVals(1) = rootVals(2);
 		rootVals(2) = mid;
@@ -86,12 +86,13 @@ for i = 1 : maxIter
 		else 
 			error = Inf;
 		end
-		errorVec = [errorVec error];
+		errorVec(1, i) =  error;
 		if error <= maxError
+			lastInd += 1;
 			break;
 		end
 	end	
-	
+	lastInd += 1;
 	if funcMid == 0
 		break;
 		
@@ -102,4 +103,8 @@ for i = 1 : maxIter
 	end
 end
 root = mid;
+xLowerVec = xLowerVec[:,1 : lastInd];
+xHighVec = xHighVec[:,1 : lastInd];
+xMidVec = xMidVec[:,1 : lastInd];
+errorVec = errorVec[:,1 : lastInd];
 end 
