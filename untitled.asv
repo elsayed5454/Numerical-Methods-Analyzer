@@ -261,17 +261,10 @@ set(handles.edit8,'String','');
 set(handles.text3,'String','');
     set(handles.edit4, 'Visible', 'on');
     set(handles.edit6, 'Visible', 'on');
-    if ListBoxValue == 1 || ListBoxValue == 2
-        myString1 = sprintf('Upper : ');
-        myString2 = sprintf('Lower : ');
-    else
-        myString1 = sprintf('Xi : ');
-        myString2 = sprintf('Xi-1 : ');
-    end
-
-    
-    set(handles.text9, 'String', myString1);
-    set(handles.text12, 'String', myString2);
+    myString = sprintf('Upper : ');
+    set(handles.text9, 'String', myString);
+    myString = sprintf('Lower : ');
+    set(handles.text12, 'String', myString);
     set(handles.text12, 'Visible', 'on');
     set(handles.text9, 'Visible', 'on');
 else
