@@ -14,26 +14,14 @@ for i=1:length(x_values)
     term =expand(p*y_values(i));
     summ= summ + term;
 end
-disp(summ);
 
-for i=1:length(values);
-    syms x
-    x=values(i);
-    w=subs(summ);
-    disp(w);
-end
-
-disp('Im here1')
-
-plotX = min(min(x_values)) : 0.1 : max(max(x_values))
-plotY = zeros(0,0);
-disp('Im here2')
-
-for i = 1 : size(plotX, 2)
-    x = plotX(i);
-    w = subs(summ);
-    plotY = [plotY w]; 
-end
-disp('Im here3')
+plotX = min(min(x_values)) : 0.1 : max(max(x_values));
+%for i = 1 : size(plotX, 2)
+%    X=plotX(i);
+%    w=subs(Func);
+%    plotY = [plotY w]; 
+%end
+x = plotX;
+plotY = subs(summ);
 plot(plotX, plotY,'.-'), legend('F');
 end

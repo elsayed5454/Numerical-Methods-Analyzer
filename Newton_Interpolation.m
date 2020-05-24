@@ -27,16 +27,17 @@ for j=2 : n
     expand(Func);
 end
 
-NI = Func
+NI = Func;
 
 plotX = min(min(x)) : 0.1 : max(max(x));
-plotY = zeros(0,0);
 
-for i = 1 : size(plotX, 2)
-    X=plotX(i);
-    w=subs(Func);
-    plotY = [plotY w]; 
-end
+%for i = 1 : size(plotX, 2)
+%    X=plotX(i);
+%    w=subs(Func);
+%    plotY = [plotY w]; 
+%end
+X = plotX;
+plotY = subs(Func);
 plot(plotX, plotY,'.-'), legend('F');
 
 end

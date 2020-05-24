@@ -368,6 +368,7 @@ end
 % --- Executes on button press in pushbutton3.
 
 function pushbutton3_Callback(hObject, eventdata, handles)
+tic;
 try
 %ListBoxValue = get(handles.listbox1,'Value');
 %myString = sprintf('Hello world!\nThe value is %d', ListBoxValue);
@@ -398,20 +399,24 @@ try
           lower =str2double(get(handles.edit6, 'String'));
 
           if ListBoxValue == 1
-            [root, xLowerVec, xHighVec, xMidVec,errorVec] = biSection(lower, upper, formula, error, maxitr)
+            [root, xLowerVec, xHighVec, xMidVec,errorVec] = biSection(lower, upper, formula, error, maxitr);
+            timeElapsed = toc;
           end
 
           if ListBoxValue == 2 
             [root, xLowerVec, xHighVec, xMidVec, yLowerVec, yHighVec, yMidVec ,errorVec] = regulaFalsi(formula, lower, upper, error, maxitr);
-
+            timeElapsed = toc;
           end
           
           if ListBoxValue == 5
-            [root, xLowerVec, xMidVec, xHighVec,errorVec] = secant(formula, lower, upper, maxitr, error)
+            [root, xLowerVec, xMidVec, xHighVec,errorVec] = secant(formula, lower, upper, maxitr, error);
+          timeElapsed = toc;
           end
-          format long;
+          
+          if ListBoxValue == 1 || ListBoxValue == 2
+               format long;
           currString= get(handles.edit8,'String')
-          rootString=sprintf('root : %d', root);
+          rootString=sprintf('root : %d \n time: %d', root,timeElapsed);
           currString{end+1}=  rootString;
           set(handles.edit8,'String',currString);
           for it = 1 : size(xLowerVec,2)
@@ -420,21 +425,59 @@ try
             currString{end+1}=  rootString;
             set(handles.edit8,'String',currString);
           end
+          else
+                format long;
+          currString= get(handles.edit8,'String')
+          rootString=sprintf('root : %d \n time: %d', root,timeElapsed);
+          currString{end+1}=  rootString;
+          set(handles.edit8,'String',currString);
+          for it = 1 : size(xLowerVec,2)
+            currString= get(handles.edit8,'String')
+            rootString=sprintf('\niteration : %d \n   xi-1 : %d \n    xi = %d \n   error = %d',it, xLowerVec(1, it), xHighVec(1, it),errorVec(1, it));
+            currString{end+1}=  rootString;
+            set(handles.edit8,'String',currString);
+          end
+          end
+         
       end
       if ListBoxValue == 6
           inGuess = str2double(get(handles.edit4, 'String'));
-          aa=birge_Vieta(inGuess, formula, maxitr, error)
-
-         bika = sprintf('Roots =\n');
+          flagOfBirgeVeta=0;
+          for i=1:length(formula);
+          if isletter(formula(i)) && formula(i)~='x'
+              flagOfBirgeVeta=1;
+              break;
+          end
+          end
+          if flagOfBirgeVeta==0
+           aa=birge_Vieta(inGuess, formula, maxitr, error);
+          timeElapsed = toc;
+         bika = sprintf('time : %d \nRoots =\n',timeElapsed);
 
          for i=1:length(aa);
             bika = sprintf('%s%d\n', bika,aa(i));
          end
          set(handles.edit8, 'String',bika);
+          else
+         [root, xVec, nextVec, errorVec] = newton_raphson(formula, inGuess, maxitr,error);
+        timeElapsed = toc;
+        format short;
+        currString = get(handles.edit8,'String')
+        rootString=sprintf('The function is not polynomial we will use newton raphson \nroot : %d \n time : %d', root,timeElapsed);
+        currString{end+1}=  rootString;
+        set(handles.edit8,'String',currString);
+        for it = 1 : size(xVec,2)
+          currString= get(handles.edit8,'String')
+          rootString=sprintf('iteration : %d \n   initialGuess : %d \n    next Guess = %d \n	error = %d',it, xVec(1, it), nextVec(1, it), errorVec(1, it));
+          currString{end+1}=  rootString;
+          set(handles.edit8,'String',currString);
+         end
+         
          % currString= get(handles.edit8,'String')
          % rootString=sprintf('low : %d , high = %d , mid = %d, error = %d', xLowerVec, xHighVec, xMidVec,errorVec);
          % currString{end+1}=  rootString;
          % set(handles.edit8,'String',currString);
+          end
       end
       if ListBoxValue == 3 || ListBoxValue == 4
 
@@ -442,13 +485,15 @@ try
         if ListBoxValue == 3
             gFunc = get(handles.edit6, 'String');
             [root, xVec, nextVec, errorVec] = fixedPoint(formula, gFunc, inGuess, error, maxitr);
+        timeElapsed = toc;
         end
         if ListBoxValue == 4
             [root, xVec, nextVec, errorVec] = newton_raphson(formula, inGuess, maxitr,error);
+        timeElapsed = toc;
         end
         format short;
         currString = get(handles.edit8,'String')
-        rootString=sprintf('root : %d', root);
+        rootString=sprintf('root : %d \n time : %d', root,timeElapsed);
         currString{end+1}=  rootString;
         set(handles.edit8,'String',currString);
         for it = 1 : size(xVec,2)
@@ -509,10 +554,10 @@ try
       if ListBoxValue == 1
           
         summ =lagrange_interpolation(values,x_value , y_value);
-
+        timeElapsed = toc;
          bika = strcat('Lagrange : f(x) = ' , char(summ));
          %set(handles.text3, 'String',strcat('Function = ' , char(sum)));
-         bika = sprintf('%s\n', bika);
+         bika = sprintf('time : %d \n%s\n',timeElapsed, bika);
 
          for i=1:length(values);
              syms x
@@ -529,9 +574,10 @@ try
       if ListBoxValue == 2
 
           summ =Newton_Interpolation(x_value , y_value);
+          timeElapsed = toc;
           bika = strcat('Newton : f(x) = ' , char(summ));
          %set(handles.text3, 'String',strcat('Function = ' , char(sum)));
-         bika = sprintf('%s\n', bika);
+         bika = sprintf('time : %d \n%s\n',timeElapsed, bika);;
 
          for i=1:length(values)
             syms X
@@ -543,7 +589,7 @@ try
       end
     end
 catch ME
-    rethrow(ME)
+    rethrow(ME);
 msgText = ME.message;
 radio1 = get(handles.rb1, 'Value');
 radio2 = get(handles.rb2, 'Value');

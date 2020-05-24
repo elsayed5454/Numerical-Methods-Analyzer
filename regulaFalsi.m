@@ -26,17 +26,8 @@ try
 
 	syms x
 	plotX = lower : 0.1 :upper;
-	plotY = zeros(0,0);
-	plotYDash = zeros(0,0);
-
-
-	for i = 1 : size(plotX, 2)
-	    x=plotX(i);
-	    w=subs(f);
-	    wdash = subs(f_dash);
-	    plotY = [plotY w]; 
-	    plotYDash = [plotYDash wdash];
-	end
+    plotY = subs(f, plotX);
+	plotYDash = subs(f_dash,plotX);
 catch ME
 	errorID = 'Bad:Expression';
 	msg = 'unable to parse the expression';

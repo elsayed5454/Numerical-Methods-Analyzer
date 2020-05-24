@@ -31,7 +31,7 @@ for i=1:imax
     % xf is final X resulted from the current iteration
     
     if subs(f_dash, xi) == 0
-        xf = 0
+        xf = 0;
         return 
     end
     try
@@ -68,15 +68,17 @@ format long
 try
     syms x
     plotX = root - 15 : 0.1 : root + 15;
-    plotY = zeros(0,0);
-    plotYDash = zeros(0,0);
-    for i = 1 : size(plotX, 2)
-        x=plotX(i);
-        w=subs(f);
-        wdash = subs(f_dash);
-        plotY = [plotY w]; 
-        plotYDash = [plotYDash wdash];
-    end
+    %plotY = zeros(0,0);
+    %plotYDash = zeros(0,0);
+    %for i = 1 : size(plotX, 2)
+    %    x=plotX(i);
+    %    w=subs(f);
+    %    wdash = subs(f_dash);
+    %    plotY = [plotY w]; 
+    %    plotYDash = [plotYDash wdash];
+    %end
+    plotY = subs(f, plotX);
+	plotYDash = subs(f_dash,plotX);
 catch ME
 	errorID = 'Bad:Expression';
 	msg = 'unable to parse the expression';

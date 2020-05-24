@@ -11,8 +11,9 @@ end
 
 try
     f = sym(a);
+    f_dash = diff(f);
 catch
-	errorID = 'Bad Expression';
+	errorID = 'Bad:Expression';
 	msg = 'unable to parse the expression';
 	baseException = MException(errorID, msg);
 	throw(baseException);
@@ -26,13 +27,13 @@ err_vec = zeros(0, 0);
 for i=1:iterationsNum
     denominator = subs(f, x1) - subs(f, x0);
     if denominator == 0
-        x2 = 0
+        x2 = 0;
         return
     end
     try
         x2 = x1 - subs(f, x1) * (x1 - x0) / denominator;
     catch
-        errorID = 'Bad Expression';
+        errorID = 'Bad:Expression';
         msg = 'unable to parse the expression';
         baseException = MException(errorID, msg);
         throw(baseException);
@@ -58,14 +59,9 @@ x2 = double(x2);
 err_vec = double(err_vec);
 
 try
-    syms x
     plotX = xr - 15 : 0.1 : xr + 15;
-    plotY = zeros(0,0);
-    for i = 1 : size(plotX, 2)
-        x=plotX(i);
-        w=subs(f);
-        plotY = [plotY w]; 
-    end
+    plotY = subs(f, plotX);
+	plotYDash = subs(f_dash,plotX);
 catch ME
 	errorID = 'Bad:Expression';
 	msg = 'unable to parse the expression';
@@ -73,8 +69,6 @@ catch ME
 	throw(baseException);
 end
 
-plot(plotX, plotY), legend('F');
-set(gca, 'XTick', xr - 15 :1:xr + 5,...
-    'XTickLabel', xr - 15 :1: xr + 5);
+plot(plotX, plotY, plotX, plotYDash), legend('F', 'F Dash');
 
 end
