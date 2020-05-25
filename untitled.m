@@ -416,7 +416,11 @@ try
           if ListBoxValue == 1 || ListBoxValue == 2
                format long;
           currString= get(handles.edit8,'String')
-          rootString=sprintf('root : %d \n time: %d', root,timeElapsed);
+          rootString=sprintf('root : %d \n time: %d \n', root,timeElapsed);
+          currString{end+1}=  rootString;
+          set(handles.edit8,'String',currString);
+          currString= get(handles.edit8,'String')
+          rootString=sprintf('ُError : %d \n', errorVec(1, size(xLowerVec,2)));
           currString{end+1}=  rootString;
           set(handles.edit8,'String',currString);
           for it = 1 : size(xLowerVec,2)
@@ -426,9 +430,13 @@ try
             set(handles.edit8,'String',currString);
           end
           else
-                format long;
+              format long;
           currString= get(handles.edit8,'String')
           rootString=sprintf('root : %d \n time: %d', root,timeElapsed);
+          currString{end+1}=  rootString;
+          set(handles.edit8,'String',currString);
+          currString= get(handles.edit8,'String')
+          rootString=sprintf('ُError : %d \n', errorVec(1, size(xLowerVec,2)));
           currString{end+1}=  rootString;
           set(handles.edit8,'String',currString);
           for it = 1 : size(xLowerVec,2)
@@ -496,6 +504,10 @@ try
         rootString=sprintf('root : %d \n time : %d', root,timeElapsed);
         currString{end+1}=  rootString;
         set(handles.edit8,'String',currString);
+        currString= get(handles.edit8,'String')
+          rootString=sprintf('ُError : %d \n', errorVec(1, size(xVec,2)));
+          currString{end+1}=  rootString;
+          set(handles.edit8,'String',currString);
         for it = 1 : size(xVec,2)
           currString= get(handles.edit8,'String')
           rootString=sprintf('iteration : %d \n   initialGuess : %d \n    next Guess = %d \n	error = %d',it, xVec(1, it), nextVec(1, it), errorVec(1, it));
