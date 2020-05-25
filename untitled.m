@@ -420,7 +420,7 @@ try
           currString{end+1}=  rootString;
           set(handles.edit8,'String',currString);
           currString= get(handles.edit8,'String')
-          rootString=sprintf('ُError : %d \n', errorVec(1, size(xLowerVec,2)));
+          rootString=sprintf('Error : %d \n', errorVec(1, size(xLowerVec,2)));
           currString{end+1}=  rootString;
           set(handles.edit8,'String',currString);
           for it = 1 : size(xLowerVec,2)
@@ -436,7 +436,7 @@ try
           currString{end+1}=  rootString;
           set(handles.edit8,'String',currString);
           currString= get(handles.edit8,'String')
-          rootString=sprintf('ُError : %d \n', errorVec(1, size(xLowerVec,2)));
+          rootString=sprintf('Error : %d \n', errorVec(1, size(xLowerVec,2)));
           currString{end+1}=  rootString;
           set(handles.edit8,'String',currString);
           for it = 1 : size(xLowerVec,2)
@@ -505,7 +505,7 @@ try
         currString{end+1}=  rootString;
         set(handles.edit8,'String',currString);
         currString= get(handles.edit8,'String')
-          rootString=sprintf('ُError : %d \n', errorVec(1, size(xVec,2)));
+          rootString=sprintf('Error : %d \n', errorVec(1, size(xVec,2)));
           currString{end+1}=  rootString;
           set(handles.edit8,'String',currString);
         for it = 1 : size(xVec,2)
@@ -601,7 +601,6 @@ try
       end
     end
 catch ME
-    rethrow(ME);
 msgText = ME.message;
 radio1 = get(handles.rb1, 'Value');
 radio2 = get(handles.rb2, 'Value');
